@@ -1,0 +1,20 @@
+{
+  "members": {
+    "207": {
+      "name": "Gajanan Keskar",
+      "isRented": false,
+      "tenentName": "",
+      "collection": {
+        "2020": {
+          "jan": {
+            "maint": "1500",
+            "lateFee": "200",
+            "mode": "online",
+            "note":""
+          }
+        },
+        "2019": {}
+      }
+    }
+  }
+}
