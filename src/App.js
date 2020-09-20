@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Container, Row, Col, Button, Nav } from "react-bootstrap";
 
-import { auth, firestore } from "./firebase/firebase.utils";
+import { auth, firestore, updateMemberYearlyData } from "./firebase/firebase.utils";
 import Header from './components/Header';
 //import DataGrid from './components/DataGrid';
 import DataGrid from './components/IndividualView';
@@ -15,7 +15,8 @@ function App() {
   let unsubscribeFromAuth = null;
   useEffect(() => {
     unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
-      //console.log(user);
+      console.log(user);
+      if(!user) return false;
       setUser(user.displayName);
 
       firestore
@@ -30,28 +31,36 @@ function App() {
           console.log("members", members)
         });
 
-      firestore
-        .doc("members/105")
-        .get()
-        .then((querySnapshot) => {
-          // querySnapshot.forEach((doc) => {
-          console.log("get-105>>",querySnapshot.data());
-          //  });
-        });
+      // firestore
+      //   .doc("members/register")
+      //   .get()
+      //   .then((querySnapshot) => {
+      //     // querySnapshot.forEach((doc) => {
+      //     console.log("get-register>>",JSON.stringify(querySnapshot.data()));
+      //     //  });
+      //   });
 
-      // firestore.doc("members/105").set(
+
+        
+      // firestore.doc("members/207").set(
       //   {
-      //     collection : {
-      //       "2019": {
-      //         "jan":{
-      //           lateFee: 0,
-      //           maint: 1500,
-      //           mode: "online",
-      //           note: "jan",
-      //         }
-      //       }
-      //     }
-      //   },
+      //     "years":{
+      //        "2019":{
+      //           "Sept":{
+      //              "mode":"online",
+      //              "maint":1500,
+      //              "note":"jan",
+      //              "lateFee":0
+      //           }
+      //        }
+      //     },
+      //     "tenentName":"",
+      //     "isRented":false,
+      //     "prevDue":0,
+      //     "comment":"placeholder",
+      //     "name":"Gajanan Keskar",
+      //     "id":207
+      //  },
       //   { merge: true }
       // );
 

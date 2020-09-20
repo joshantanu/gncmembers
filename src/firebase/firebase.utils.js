@@ -22,4 +22,14 @@ const config = {
 
   export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
+
+  export const updateMemberYearlyData = (flatNumber, data) => {
+    firestore.doc(`members/${flatNumber}`).set(
+      {
+        "years":data
+      },
+      { merge: true }
+    );
+  };
+
   export default firebase;

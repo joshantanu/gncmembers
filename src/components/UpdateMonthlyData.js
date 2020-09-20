@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
+import { firestore, updateMemberYearlyData } from "../firebase/firebase.utils";
+import AutoComplete from "./AutoComplete";
 
 function UpdateMonthlyData() {
   const [validated, setValidated] = useState(false);
+  const [membersData, setMembersData] = useState(false);
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -11,7 +14,30 @@ function UpdateMonthlyData() {
     }
 
     setValidated(true);
+
+    // updateMemberYearlyData(101,{
+    //   "2020": {
+    //     Sept: {
+    //       mode: "online",
+    //       maint: 1500,
+    //       note: "jan",
+    //       lateFee: 0
+    //     }
+    //   }
+    // })
   };
+
+  useEffect(()=>{
+    firestore
+        .doc("members/register")
+        .get()
+        .then((querySnapshot) => {
+          // querySnapshot.forEach((doc) => {
+          //console.log("get-register>>",JSON.stringify(querySnapshot.data()));
+          setMembersData(querySnapshot.data())
+          //  });
+        });
+  },[])
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -19,9 +45,21 @@ function UpdateMonthlyData() {
         <Form.Label>Month &amp; Year</Form.Label>
 
         <Form.Group as={Col} controlId="month">
-          <Form.Control as="select" defaultValue="Choose...">
+          <Form.Control as="select" defaultValue="Sep" >
             <option>Choose...</option>
-            <option>January</option>
+            <option value="Jan">January</option>
+            <option value="Feb">February</option>
+            <option value="Mar">March</option>
+            <option value="Apr">April</option>
+            <option value="May">May</option>
+            <option value="Jun">June</option>
+            <option value="Jul">July</option>
+            <option value="Aug">Aug</option>
+            <option value="Sep">September</option>
+            <option value="Oct">October</option>
+            <option value="Nov">November</option>
+            <option value="Dec">December</option>
+
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col} controlId="Year">
@@ -36,10 +74,7 @@ function UpdateMonthlyData() {
 
       <Form.Group as={Row} md="4" controlId="month">
         <Form.Label>Depositor's Name</Form.Label>
-        <Form.Control as="select">
-          <option>Choose...</option>
-          <option>January</option>
-        </Form.Control>
+        <AutoComplete membersData={membersData} />
       </Form.Group>
 
       <Form.Group as={Row} md="4" controlId="month">
@@ -57,6 +92,13 @@ function UpdateMonthlyData() {
           defaultValue="1500"
         />
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group as={Row} md="4" controlId="validationCustom02">
+        <Form.Label>Late Fee</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Late Fee"
+        />
       </Form.Group>
       <Form.Group as={Row} md="4" controlId="validationCustom02">
         <Form.Label>Note</Form.Label>
