@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import "./App.css";
-import { Container, Row, Col, Button, Nav } from "react-bootstrap";
 
 import { auth, firestore, updateMemberYearlyData } from "./firebase/firebase.utils";
 import Header from './components/Header';
@@ -27,6 +26,7 @@ function App() {
           querySnapshot.forEach((doc) => {
             members.push(doc.data());
           });
+          members.pop()
           setMembers(members)
           console.log("members", members)
         });

@@ -66,7 +66,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
         */}
       {props.membersData && Object.keys(props.membersData).map((key,index) =>
-        <Dropdown.Item eventKey={index} value={props.membersData[key]}>{key}</Dropdown.Item>
+        <Dropdown.Item eventKey={index} key={index} value={props.membersData[key]}>{key}</Dropdown.Item>
         
         )
       }
