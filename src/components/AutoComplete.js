@@ -8,8 +8,7 @@ import { FormControl, Dropdown } from "react-bootstrap";
 // Dropdown needs access to the DOM of the Menu to measure it
 const AutoComplete = props => {
   let [members, setMembers] = useState(props.membersData);
-  let [value, setValue] = useState("");
-  let [show, setShow] = useState(false);
+  let [filterVal, setFilterVal] = useState("");
 
   const onchangeHandler = e => {
     console.log(e.target.value);
@@ -18,43 +17,43 @@ const AutoComplete = props => {
         !e.target.value || child.toLowerCase().indexOf(e.target.value) >= 0
     );
 
-    setValue(e.target.value);
+    setFilterVal(e.target.value);
     setMembers(newVal);
-    setShow(true)
   };
 
   const onItemClick = e => {
-    console.log(e.target.value);
+    
+    setFilterVal(e.target.innerText);
+    setMembers(null);
+    props.setFormControlValue(e)
+
   };
 
-  console.log("inautocomplete>>", props.membersData, value, members);
   return (
-    <React.Fragment>
+    <div>
     
         <FormControl
-          autoFocus
-          className="mx-3 my-2 w-auto"
           placeholder="Type to filter..."
           onChange={onchangeHandler}
-          value={value}
+          value={filterVal}
           autocomplete="off"
+          
         />
-      <Dropdown>
-        <Dropdown.Menu show={show}>
-          {members &&
-            members.map((key, index) => (
-              <Dropdown.Item
-                eventKey={index}
+      {(members && filterVal) && <ul className="dropdown">
+        
+          {members.map((key, index) => (
+              <li
                 key={index}
                 value={props.membersData[key]}
-                
+                onClick={onItemClick}
+                id={"flat"}
               >
-                <span onClick={onItemClick}>{key}</span>
-              </Dropdown.Item>
+                {key}
+              </li>
             ))}
-        </Dropdown.Menu>
-      </Dropdown>
-    </React.Fragment>
+         
+          </ul> }
+    </div>
   );
 };
 

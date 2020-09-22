@@ -6,12 +6,16 @@ import AutoComplete from "./AutoComplete";
 function UpdateMonthlyData() {
   const [validated, setValidated] = useState(false);
   const [membersData, setMembersData] = useState(false);
+  const [formData, setFormData] = useState({})
+
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    event.preventDefault();
+    const form = event.target.elements;
+    console.log(form)
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
 
     setValidated(true);
 
@@ -27,6 +31,14 @@ function UpdateMonthlyData() {
     // })
   };
 
+  const setFormControlValue = e => {
+    console.log(e.target.name)
+    setFormData({
+      ...formData,
+      [e.target.id]:e.target.value
+    })
+  }
+
   useEffect(()=>{
     firestore
         .doc("members/register")
@@ -41,11 +53,11 @@ function UpdateMonthlyData() {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Form.Group as={Row} md="4" controlId="validationCustom01">
+      <Form.Group as={Row} md="4">
         <Form.Label>Month &amp; Year</Form.Label>
 
-        <Form.Group as={Col} controlId="month">
-          <Form.Control as="select" defaultValue="Sep" >
+        <Form.Group as={Col}>
+          <Form.Control as="select" defaultValue="Sep" id="month" onChange={setFormControlValue} >
             <option>Choose...</option>
             <option value="Jan">January</option>
             <option value="Feb">February</option>
@@ -62,8 +74,8 @@ function UpdateMonthlyData() {
 
           </Form.Control>
         </Form.Group>
-        <Form.Group as={Col} controlId="Year">
-          <Form.Control as="select" defaultValue="2020">
+        <Form.Group as={Col}>
+          <Form.Control as="select" defaultValue="2020" id="year" onChange={setFormControlValue}>
             <option>Choose...</option>
             <option>2019</option>
             <option>2020</option>
@@ -71,38 +83,40 @@ function UpdateMonthlyData() {
         </Form.Group>
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
       </Form.Group>
-
-      <Form.Group as={Row} md="4" controlId="month">
+ {console.log(formData)}
+      <Form.Group as={Row} md="4">
         <Form.Label>Depositor's Name</Form.Label>
-        <AutoComplete membersData={membersData} />
+        <AutoComplete membersData={membersData} id="flat" setFormControlValue={setFormControlValue} />
       </Form.Group>
 
-      <Form.Group as={Row} md="4" controlId="month">
+      <Form.Group as={Row} md="4">
         <Form.Label>Flat #</Form.Label>
 
-        <Form.Label>406</Form.Label>
+        <Form.Label>{formData.flat}</Form.Label>
       </Form.Group>
 
-      <Form.Group as={Row} md="4" controlId="validationCustom02">
+      <Form.Group as={Row} md="4">
         <Form.Label>Amount</Form.Label>
         <Form.Control
           required
           type="text"
           placeholder="Amount"
           defaultValue="1500"
+          id="amount" onChange={setFormControlValue}
         />
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
       </Form.Group>
-      <Form.Group as={Row} md="4" controlId="validationCustom02">
+      <Form.Group as={Row} md="4">
         <Form.Label>Late Fee</Form.Label>
         <Form.Control
           type="text"
           placeholder="Late Fee"
+          id="lateFee" onChange={setFormControlValue}
         />
       </Form.Group>
-      <Form.Group as={Row} md="4" controlId="validationCustom02">
+      <Form.Group as={Row} md="4">
         <Form.Label>Note</Form.Label>
-        <Form.Control required type="text" placeholder="Note" defaultValue="" />
+        <Form.Control type="text" placeholder="Note" defaultValue="" id="note" onChange={setFormControlValue}/>
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
       </Form.Group>
 
