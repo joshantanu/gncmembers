@@ -8,7 +8,7 @@ import { FormControl, Dropdown } from "react-bootstrap";
 // Dropdown needs access to the DOM of the Menu to measure it
 const AutoComplete = props => {
   let [members, setMembers] = useState(props.membersData);
-  let [filterVal, setFilterVal] = useState("");
+  let [filterVal, setFilterVal] = useState(props.name);
 
   const onchangeHandler = e => {
     console.log(e.target.value);
@@ -33,6 +33,7 @@ const AutoComplete = props => {
     <div>
     
         <FormControl
+          required
           placeholder="Type to filter..."
           onChange={onchangeHandler}
           value={filterVal}

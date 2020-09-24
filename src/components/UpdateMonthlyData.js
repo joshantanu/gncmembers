@@ -3,36 +3,51 @@ import { Form, Button, Col, Row } from "react-bootstrap";
 import { firestore, updateMemberYearlyData } from "../firebase/firebase.utils";
 import AutoComplete from "./AutoComplete";
 
+const initialState = {
+  maint:1500,
+  month:"Aug",
+  year:"2020",
+  flat:null,
+  note:"",
+  lateFee: 0,
+  name: ""
+}
+
 function UpdateMonthlyData() {
   const [validated, setValidated] = useState(false);
   const [membersData, setMembersData] = useState(false);
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState(initialState)
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.target.elements;
+    const form = event.currentTarget;
     console.log(form)
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+    }
+    console.log(formData)
 
-    setValidated(true);
 
-    // updateMemberYearlyData(101,{
-    //   "2020": {
-    //     Sept: {
-    //       mode: "online",
-    //       maint: 1500,
-    //       note: "jan",
-    //       lateFee: 0
-    //     }
-    //   }
-    // })
+    setValidated(false);
+
+    const {flat, maint, note, lateFee, month, year } = formData;
+
+    updateMemberYearlyData(flat,{
+      [year]: {
+        [month]: {
+          maint,
+          note,
+          lateFee
+        }
+      }
+    })
+
+    setFormData(initialState)
   };
 
   const setFormControlValue = e => {
-    console.log(e.target.name)
     setFormData({
       ...formData,
       [e.target.id]:e.target.value
@@ -51,13 +66,15 @@ function UpdateMonthlyData() {
         });
   },[])
 
+  const {flat, maint, note, lateFee, month, year, name } = formData;
+
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Form.Group as={Row} md="4">
         <Form.Label>Month &amp; Year</Form.Label>
 
         <Form.Group as={Col}>
-          <Form.Control as="select" defaultValue="Sep" id="month" onChange={setFormControlValue} >
+          <Form.Control as="select" defaultValue={month} id="month" onChange={setFormControlValue} >
             <option>Choose...</option>
             <option value="Jan">January</option>
             <option value="Feb">February</option>
@@ -75,7 +92,7 @@ function UpdateMonthlyData() {
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
-          <Form.Control as="select" defaultValue="2020" id="year" onChange={setFormControlValue}>
+          <Form.Control as="select" defaultValue={year} id="year" onChange={setFormControlValue}>
             <option>Choose...</option>
             <option>2019</option>
             <option>2020</option>
@@ -83,25 +100,25 @@ function UpdateMonthlyData() {
         </Form.Group>
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
       </Form.Group>
- {console.log(formData)}
       <Form.Group as={Row} md="4">
         <Form.Label>Depositor's Name</Form.Label>
-        <AutoComplete membersData={membersData} id="flat" setFormControlValue={setFormControlValue} />
+        <AutoComplete membersData={membersData} id="flat" name={name} setFormControlValue={setFormControlValue} />
       </Form.Group>
 
       <Form.Group as={Row} md="4">
         <Form.Label>Flat #</Form.Label>
 
-        <Form.Label>{formData.flat}</Form.Label>
+        <Form.Label>{flat}</Form.Label>
       </Form.Group>
 
       <Form.Group as={Row} md="4">
-        <Form.Label>Amount</Form.Label>
+        <Form.Label>Maintenance Amount</Form.Label>
         <Form.Control
           required
           type="text"
           placeholder="Amount"
-          defaultValue="1500"
+          value={maint}
+          value = {formData.amount}
           id="amount" onChange={setFormControlValue}
         />
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -111,12 +128,13 @@ function UpdateMonthlyData() {
         <Form.Control
           type="text"
           placeholder="Late Fee"
+          value={lateFee}
           id="lateFee" onChange={setFormControlValue}
         />
       </Form.Group>
       <Form.Group as={Row} md="4">
         <Form.Label>Note</Form.Label>
-        <Form.Control type="text" placeholder="Note" defaultValue="" id="note" onChange={setFormControlValue}/>
+        <Form.Control value={note} type="text" placeholder="Note" defaultValue="" id="note" onChange={setFormControlValue}/>
         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
       </Form.Group>
 
