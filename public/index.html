@@ -26,25 +26,39 @@
     -->
     <title>React App</title>
     <link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-  crossorigin="anonymous"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.0.0/react-bootstrap-table-all.min.css"
-  crossorigin="anonymous"
-/>
-<style>
-  .dropdown {
-    position: absolute;
-    width: 300px;
-    border: 1px solid gray;
-    background: white;
-  }
-  .dropdown ul {list-style: none; margin: 0; padding: 0} 
-  .dropdown li { display: block; margin: 0 2px 0; list-style: none; text-align: left;}
-</style>
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.0.0/react-bootstrap-table-all.min.css"
+      crossorigin="anonymous"
+    />
+    <style>
+      .dropdown {
+        position: absolute;
+        width: 300px;
+        border: 1px solid gray;
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
+      .dropdown ul {
+        list-style: none;
+      }
+      .dropdown li {
+        display: block;
+        list-style: none;
+        text-align: left;
+        padding: 0 10px;
+        margin: 3px 0;
+        cursor: pointer;
+      }
+      .dropdown li:hover {
+        background: #eee
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -59,6 +73,9 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react/umd/react.production.min.js"
+      crossorigin
+    ></script>
   </body>
 </html>

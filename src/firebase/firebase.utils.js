@@ -39,4 +39,19 @@ export const updateMemberYearlyData = (flatNumber, data, callback) => {
     });
 };
 
+export const getDuesData = (callback) => {
+     firestore
+        .collection("members")
+        .get()
+        .then((querySnapshot) => {
+          let members = [];
+          querySnapshot.forEach((doc) => {
+            members.push(doc.data());
+          });
+          members.pop()
+          callback(members);
+          //console.log("members", members)
+        });
+}
+
 export default firebase;

@@ -37,8 +37,7 @@ const AutoComplete = props => {
           placeholder="Type to filter..."
           onChange={onchangeHandler}
           value={filterVal}
-          autocomplete="off"
-          
+          autoComplete="off"
         />
       {(members && filterVal) && <ul className="dropdown">
         

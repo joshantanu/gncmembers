@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { HashRouter, Route, Switch } from 'react-router-dom'
 
 import "./App.css";
 
@@ -7,6 +8,7 @@ import Header from './components/Header';
 //import DataGrid from './components/DataGrid';
 import DataGrid from './components/IndividualView';
 import UpdateMonthlyData from './components/UpdateMonthlyData';
+import Dues from './components/Dues';
 
 function App() {
   const [user, setUser] = useState("Guest");
@@ -83,8 +85,14 @@ function App() {
     <div className="App">
       <Header />
       Welcome {user}!
-      <UpdateMonthlyData />
-      <DataGrid data={members} />
+ 
+      <HashRouter>
+  <Switch>
+    <Route exact path="/entry" component={UpdateMonthlyData} />
+    <Route exact path="/" component={DataGrid} />  
+    <Route exact path="/dues" component={Dues} />   
+  </Switch>
+</HashRouter>
     </div>
   );
 }

@@ -9,7 +9,7 @@ const initialState = {
   year:"2020",
   flat:null,
   note:"",
-  lateFee: 0,
+  lateFee: "",
   name: ""
 }
 
@@ -21,16 +21,16 @@ function UpdateMonthlyData() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    console.log(form)
+    //console.log(form)
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      setValidated(false);
       return false
     }
-    console.log(formData)
+    //console.log(formData)
 
 
-    setValidated(false);
 
     const {flat, maint, note, lateFee, month, year } = formData;
 
@@ -55,6 +55,12 @@ function UpdateMonthlyData() {
   }
 
   useEffect(()=>{
+    // const members = localStorage.getItem("members")
+    // if (members) {
+    //   setMembersData(JSON.parse(members))
+    //   return true;
+    // }
+
     firestore
         .doc("members/register")
         .get()
@@ -62,6 +68,7 @@ function UpdateMonthlyData() {
           // querySnapshot.forEach((doc) => {
           //console.log("get-register>>",JSON.stringify(querySnapshot.data()));
           setMembersData(querySnapshot.data())
+          localStorage.setItem("members", `${JSON.stringify(querySnapshot.data())}`);
           //  });
         });
   },[])
