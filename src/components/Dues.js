@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDuesData } from "../firebase/firebase.utils";
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {calMonths} from "../constants/appConstants";
 
 const Dues = () => {
   const [duesData, setDuesData] = useState([]);
@@ -45,6 +46,8 @@ const Dues = () => {
     // }
     
     const dueMembers = []
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
     duesData.forEach(member => {
       const id = member.id;
       const name = member.name;
@@ -55,18 +58,21 @@ const Dues = () => {
 
       Object.keys(member.years).forEach(year => {
         months += `${year}: `;
-
-        Object.keys(member.years[year]).forEach(mth => {
          const thisYear = member.years[year];
-          //console.log(id,member.years[year][mth])
-          if(thisYear[mth].maint){
+
+        for(let i=0; i <= Object.keys(calMonths).length; i++ ) {
+          let mth = Object.keys(calMonths)[i];
+          // console.log(mth)
+           
+           if(eval(year) === currentYear && i === currentMonth) {break}
+          if(!thisYear[mth]){
             months += `${mth}, `;
-            maintDue += eval(thisYear[mth].maint);
-            lateFee += thisYear[mth].lateFee == "" ? 0 : eval(thisYear[mth].lateFee);
+            maintDue += 1500;
+            lateFee += 200;
             totalDue = maintDue+lateFee;
           }
           
-        });
+        };
 
         
       });
